@@ -1,0 +1,15 @@
+{
+  "ID": 0,
+  "Name": "jasmine",
+  "Address": "1234 Avenue St",
+  "Phone": "234-234-7894",
+  "Orders": [
+    {
+      "ID": 0,
+      "StoreID": 0,
+      "CustomerID": 0,
+      "Total": 0,
+      "Product": null
+    }
+  ]
+}

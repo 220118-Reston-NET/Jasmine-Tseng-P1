@@ -1,0 +1,8 @@
+bin
+obj
+.vscode
+appsettings.json
+logs
+StoreUI
+publish
+.DS_Store
