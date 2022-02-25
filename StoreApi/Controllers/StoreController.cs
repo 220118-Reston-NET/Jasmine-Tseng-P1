@@ -8,6 +8,7 @@ using BL;
 using StoreModel;
 using StoreDL;
 using System.Data.SqlClient;
+using StoreApi.DataTransferObject;
 
 namespace StoreApi.Controllers
 {
@@ -24,18 +25,63 @@ namespace StoreApi.Controllers
         [HttpGet] data annotation basically tells the complier that the method will be an action inside of a controller
         specifically this will handle a GET from the client and send a http request.
         */
-         [HttpPost("New Customer Registration")]
-        public IActionResult AddCustomer(/*[FromBody]*/Customer p_customer)
+        [HttpPost("New Customer Registration")]
+        public IActionResult AddCustomer([FromBody] CustomerRegisterForm p_customer)
         {
             try
             {
-                return Created("Successfully added", _storeBL.AddCustomer(p_customer));
+                //Check all the fills are coorect
+                if (string.IsNullOrWhiteSpace(p_customer.UserName))
+                {
+                    return BadRequest(new { Result = "Your username should not be empty or whitespace!" });
+                }
+                if (string.IsNullOrWhiteSpace(p_customer.Password) || p_customer.Password.Length < 6)
+                {
+                    return BadRequest(new { Result = "Your password should not be empty or whitespace!" });
+                }
+                if (string.IsNullOrWhiteSpace(p_customer.Name))
+                {
+                    return BadRequest(new { Result = "Your name should not be empty or whitespace!" });
+                }
+                if (string.IsNullOrEmpty(p_customer.Address))
+                {
+                    return BadRequest(new { Result = "Your address should not be empty!" });
+                }
+                if (string.IsNullOrEmpty(p_customer.PhoneNumber) || p_customer.PhoneNumber.All(Char.IsDigit))
+                {
+                    return BadRequest(new { Result = "Your phone number should not be empty !" });
+                }
+                //Add data to the Customer table
+                Customer _registerCustomer = new Customer();
+                _registerCustomer.Name = p_customer.Name;
+                _registerCustomer.Address = p_customer.Address;
+                _registerCustomer.Phone = p_customer.PhoneNumber;
+
+                _storeBL.AddCustomer(_registerCustomer);
+                Log.Information("Added new user success " + _registerCustomer);
+                //set up logger
+
+                //Add data to the Userdata table
+                UserData _registerUser = new UserData();
+                _registerUser.Username = p_customer.UserName;
+                _registerUser.Password = p_customer.Password;
+
+                _storeBL.A
+
+
+                //TODO
+                //_storeBL.AddCustomer(_registerUser);
+
+                return Created("Successfully added", p_customer);
             }
             catch (System.Exception ex)
             {
                 return Conflict(ex.Message);
             }
         }
+
+        [HttpPost("PlaceOrder")]
+
         // GET: api/Store
         [HttpGet("GetAll")]//"GetAll" is the end point (shows up in swagger next to GET)
         public IActionResult GetAllCustomers() //action is a method inside of a controller
@@ -48,7 +94,7 @@ namespace StoreApi.Controllers
             {
                 //Api is responsible for sending the right resource and the right status code
                 //in this case if it was unable to connect to the db it will give a 404 status code
-                
+
                 return NotFound(); //It can be broke but if 0k method is used it will still return a 200 status code.
             }
 
@@ -65,11 +111,11 @@ namespace StoreApi.Controllers
             }
             catch (System.Exception)
             {
-                
+
                 return NotFound();
             }
         }
-//  List<Order> GetCustomerOrderByID(int p_custid);
+        //  List<Order> GetCustomerOrderByID(int p_custid);
         // POST: api/Store
         [HttpPost]
         public void Post([FromBody] string value)
