@@ -31,14 +31,14 @@
             Price = 0.00m;
             Color = "Unknown";
             Quantity = 0;
-           
+
         }
 
         //ToString() method is the string version of your object
-        public override string ToString()
-        {
-            return $"Name: {Name}\nPrice: ${Price}\nColor: {Color}\nQuantity: {Quantity}";
-        }
+        // public override string ToString()
+        // {
+        //     return $"Name: {Name}\nPrice: ${Price}\nColor: {Color}\nQuantity: {Quantity}";
+        // }
     }
 }
 

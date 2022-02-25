@@ -8,13 +8,14 @@ namespace StoreModel
         // public string Store { get; set; }
         public string Product { get; set; }
         public int ProductID { get; set; }
-        public int Quantity {
+        public int Quantity
+        {
             get { return _quantity; }
-            set 
+            set
             {
                 if (value >= 0)
                 {
-                    _quantity = value; 
+                    _quantity = value;
                 }
                 else
                 {
@@ -22,18 +23,18 @@ namespace StoreModel
                 }
             }
         }
-    
+
         public LineItem()
-            {
-                LineItemID = 0;
-                Product = "Unknown";
-                Quantity = 0;
-            
-            }
-     
-        public override string ToString()
-            {
-                return $"{Product}: {Quantity}\n{TotalPrice}";
-            }
+        {
+            LineItemID = 0;
+            Product = "Unknown";
+            Quantity = 0;
+
+        }
+
+        // public override string ToString()
+        //     {
+        //         return $"{Product}: {Quantity}\n{TotalPrice}";
+        //     }
     }
 }
