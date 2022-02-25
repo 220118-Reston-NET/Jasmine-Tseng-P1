@@ -6,7 +6,7 @@ namespace StoreDL
     {
 
         // Product AddItem(Product pp_item);
-    
+
         // List<Product> GetAllProduct();
 
         Customer AddCustomer(Customer p_customer); // 1. Add a Customer
@@ -18,6 +18,12 @@ namespace StoreDL
         List<LineItem> GetAllLineItems(string p_name); // 3 - 2
         List<Order> GetCustomerOrderByID(int p_custid); //5. View order history
         LineItem ReplenishInventory(LineItem p_lineitem); // 6
+
+        User RegisterUser(User p_user);
+
+        List<User> GetAllUsers();
+
+
     }
 }
 
