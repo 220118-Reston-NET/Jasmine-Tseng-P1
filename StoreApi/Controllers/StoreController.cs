@@ -70,7 +70,6 @@ namespace StoreApi.Controllers
                 //set up logger
 
 
-
                 //TODO
                 //_storeBL.AddCustomer(_registerUser);
 
