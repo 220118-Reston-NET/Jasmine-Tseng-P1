@@ -1,7 +1,12 @@
+global using Serilog;
 using StoreDL;
 using BL;
 
 var builder = WebApplication.CreateBuilder(args);
+
+Log.Logger = new LoggerConfiguration()
+    .WriteTo.File("./logs/server.txt") //We configure our logger to save in this file
+    .CreateLogger();
 
 // Add services to the container.
 
@@ -10,7 +15,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddScoped<IRepository>( repo => new SQLRepository(builder.Configuration.GetConnectionString("Reference2DB"))); //making repository available on all controllers
+builder.Services.AddScoped<IRepository>(repo => new SQLRepository(builder.Configuration.GetConnectionString("Reference2DB"))); //making repository available on all controllers
 builder.Services.AddScoped<IStoreBL, StoreBL>(); //The line above
 
 var app = builder.Build();

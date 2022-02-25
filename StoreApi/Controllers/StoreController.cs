@@ -26,7 +26,7 @@ namespace StoreApi.Controllers
         specifically this will handle a GET from the client and send a http request.
         */
         [HttpPost("New Customer Registration")]
-        public IActionResult AddCustomer([FromBody] CustomerRegisterForm p_customer)
+        public IActionResult Register([FromBody] CustomerRegisterForm p_customer)
         {
             try
             {
@@ -51,22 +51,24 @@ namespace StoreApi.Controllers
                 {
                     return BadRequest(new { Result = "Your phone number should not be empty !" });
                 }
+                //Add data to the Userdata table
+                User _registerUser = new User();
+                _registerUser.Username = p_customer.UserName;
+                _registerUser.Password = p_customer.Password;
+
+                _storeBL.RegisterUser(_registerUser);
+
                 //Add data to the Customer table
                 Customer _registerCustomer = new Customer();
                 _registerCustomer.Name = p_customer.Name;
                 _registerCustomer.Address = p_customer.Address;
                 _registerCustomer.Phone = p_customer.PhoneNumber;
+                _registerCustomer.Username = p_customer.UserName;
 
                 _storeBL.AddCustomer(_registerCustomer);
                 Log.Information("Added new user success " + _registerCustomer);
                 //set up logger
 
-                //Add data to the Userdata table
-                UserData _registerUser = new UserData();
-                _registerUser.Username = p_customer.UserName;
-                _registerUser.Password = p_customer.Password;
-
-                _storeBL.A
 
 
                 //TODO
@@ -115,11 +117,26 @@ namespace StoreApi.Controllers
                 return NotFound();
             }
         }
-        //  List<Order> GetCustomerOrderByID(int p_custid);
+
         // POST: api/Store
-        [HttpPost]
-        public void Post([FromBody] string value)
+        [HttpPost("Login")]
+        public IActionResult Login([FromBody] User p_user)
         {
+            try
+            {
+                if (_storeBL.Login(p_user))
+                {
+                    Log.Information("User logged in successfully" + p_user.Username);
+                    return Ok(new { Results = "Login Successful." });
+                }
+                Log.Warning("Login Failure");
+                return BadRequest(new { Result = "Login Failed!" });
+            }
+            catch (System.Exception e)
+            {
+                Log.Warning(e.Message);
+                return StatusCode(500, e);
+            }
         }
 
         // PUT: api/Store/5

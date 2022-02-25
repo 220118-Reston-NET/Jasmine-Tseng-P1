@@ -40,6 +40,8 @@ namespace BL
 
         LineItem ReplenishInventory(LineItem p_lineitem); // 6
 
+        User RegisterUser(User p_user);
+        bool Login(User p_user);
 
 
     }
