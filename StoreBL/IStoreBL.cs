@@ -26,7 +26,7 @@ namespace BL
 
         List<StoreFront> SearchStoreFronts(string s_name); //3 - 1
 
-        List<LineItem> ViewStoreInventory(string p_name); // 3 - 2
+        List<LineItem> ViewStoreInventory(int p_storeid); // 3 - 2
         List<StoreFront> GetAllStores();  //4 - 2
         List<Product> GetAllProducts(); //4 - 3
         List<Inventory> GetAllInventory(); // 4- 3
@@ -38,7 +38,9 @@ namespace BL
 
         List<Order> GetCustomerOrderByID(int p_custid); // 5 -2
 
-        LineItem ReplenishInventory(LineItem p_lineitem); // 6
+        List<Order> GetStoreOrderHistoryByID(int p_storeid);
+
+        Inventory ReplenishInventory(Inventory p_inventory); // 6
 
         User RegisterUser(User p_user);
         bool Login(User p_user);

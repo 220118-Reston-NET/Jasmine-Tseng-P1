@@ -59,7 +59,7 @@ namespace BL
             .Where(store => store.StoreFrontName.ToLower().Contains(s_name))
             .ToList();
         }
-        public List<LineItem> ViewStoreInventory(string p_name) //3 - 2
+        public List<LineItem> ViewStoreInventory(int p_storeid) //3 - 2
         {
             // List<LineItem> listOfLineItems = _repo.GetAllLineItems();
 
@@ -67,7 +67,10 @@ namespace BL
             // .Where(lineitem => lineitem.Store.Contains(p_name))
             // .ToList();
 
-            return _repo.GetAllLineItems(p_name.ToLower()); // This works
+            //return _repo.GetAllLineItems(p_name.ToLower()); // This works
+
+            return _repo.GetAllLineItems(p_storeid);
+
         }
 
         public List<Customer> GetAllCustomers() // 5
@@ -98,11 +101,15 @@ namespace BL
         {
             return _repo.GetCustomerOrderByID(p_custid);
         }
+        public List<Order> GetStoreOrderHistoryByID(int p_storeid) //View Order by Store
+        {
+            return _repo.GetStoreOrderHistoryByID(p_storeid);
+        }
 
-        public LineItem ReplenishInventory(LineItem p_lineitem) // 6. Replenish Inventory
+        public Inventory ReplenishInventory(Inventory p_inventory) // 6. Replenish Inventory
         {
             Console.WriteLine("Item Added Successfully.");
-            return _repo.ReplenishInventory(p_lineitem);
+            return _repo.ReplenishInventory(p_inventory);
         }
 
         public List<Product> GetAllProducts() //4-3
@@ -133,11 +140,12 @@ namespace BL
             return GetAllInventory().FindAll(p => p.StoreID == p_storeid);
         }
 
-        public void PlaceOrder(int p_custid, int p_storeid, List<LineItem> _cart, decimal p_totalprice)
+        public void PlaceOrder(int p_custid, int p_storeid, List<LineItem> _cart, decimal p_totalprice) // 4 - 3
         {
             Console.WriteLine("Your Order has been placed successfully!");
             _repo.PlaceOrder(p_custid, p_storeid, _cart, p_totalprice);
         }
+
 
         public User RegisterUser(User p_user)
         {
@@ -167,6 +175,7 @@ namespace BL
             }
             return false;
         }
+
     }
 }
 

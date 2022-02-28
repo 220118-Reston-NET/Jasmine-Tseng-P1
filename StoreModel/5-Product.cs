@@ -4,10 +4,10 @@
     public class Product
     {
         int _quantity;
+
         public int ItemID { get; set; }
         public string Name { get; set; }
         public decimal Price { get; set; }
-        public string Color { get; set; }
         public int Quantity { get; set; }
 
         // public int Quantity {
@@ -29,7 +29,6 @@
         {
             Name = "Unknown";
             Price = 0.00m;
-            Color = "Unknown";
             Quantity = 0;
 
         }

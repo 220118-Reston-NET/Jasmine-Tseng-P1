@@ -15,12 +15,11 @@ namespace StoreDL
         List<Product> GetAllProducts(); //3-2
         List<Inventory> GetAllInventory(); //4
         void PlaceOrder(int p_custid, int p_storeid, List<LineItem> _cart, decimal p_totalprice);
-        List<LineItem> GetAllLineItems(string p_name); // 3 - 2
-        List<Order> GetCustomerOrderByID(int p_custid); //5. View order history
-        LineItem ReplenishInventory(LineItem p_lineitem); // 6
-
+        List<LineItem> GetAllLineItems(int p_storeid); // 3 - 2
+        List<Order> GetCustomerOrderByID(int p_custid); //5. View Customer order history
+        List<Order> GetStoreOrderHistoryByID(int p_storeid); // View Store Order History
+        Inventory ReplenishInventory(Inventory p_inventory); // 6
         User RegisterUser(User p_user);
-
         List<User> GetAllUsers();
 
 

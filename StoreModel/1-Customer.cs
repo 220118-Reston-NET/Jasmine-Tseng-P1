@@ -9,14 +9,14 @@ namespace StoreModel
         public string Username { get; set; }
 
         private List<Order> _orders;
-        public List<Order> _Orders
-        {
-            get { return _orders; }
-            set
-            {
-                _orders = value;
-            }
-        }
+        //public List<Order> _Orders
+        // {
+        //     get { return _orders; }
+        //     set
+        //     {
+        //         _orders = value;
+        //     }
+        // }
         public Customer() //default values
         {
             ID = 0;

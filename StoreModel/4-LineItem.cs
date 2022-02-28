@@ -4,10 +4,12 @@ namespace StoreModel
     {
         private int _quantity;
         private decimal TotalPrice;
-        public int LineItemID { get; set; }
-        // public string Store { get; set; }
-        public string Product { get; set; }
+
+
+        public string StoreName { get; set; }
         public int ProductID { get; set; }
+        public string Product { get; set; }
+        public decimal Price { get; set; }
         public int Quantity
         {
             get { return _quantity; }
@@ -23,10 +25,11 @@ namespace StoreModel
                 }
             }
         }
+        public int StoreID { get; set; }
 
         public LineItem()
         {
-            LineItemID = 0;
+            ProductID = 0;
             Product = "Unknown";
             Quantity = 0;
 

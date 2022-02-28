@@ -1,0 +1,16 @@
+using StoreModel;
+
+namespace StoreApi.DataTransferObject
+{
+    public class ShoppingCart
+    {
+        //int p_custid, int p_storeid, List<LineItem> _cart, decimal p_totalprice
+        public int CustomerID { get; set; }
+        public int StoreFrontID { get; set; }
+        // public int ProductID { get; set; }
+        // public int Quantity { get; set; }
+        public List<LineItem> Cart { get; set; }
+        public decimal TotalPrice { get; set; }
+
+    }
+}

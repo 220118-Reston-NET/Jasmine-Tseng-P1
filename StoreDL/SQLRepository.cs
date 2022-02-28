@@ -94,16 +94,16 @@ namespace StoreDL
             return listOfStores;
         }
         // 3-2-------------------------------------------------------------------------------------------------
-        public List<LineItem> GetAllLineItems(string p_name)
+        public List<LineItem> GetAllLineItems(int p_storeid)
         {
             List<LineItem> listOfLineItems = new List<LineItem>();
-            string sqlQuery = @"SELECT product.product_name, inventory.quantity
+            string sqlQuery = @"SELECT product.product_id, product.product_name, inventory.quantity, storefront.storefront_id, storefront.storefront_name, product.product_price
                                 from product
                                 inner join Inventory
                                 on product.product_id = inventory.inventory_productid
                                 inner join storefront
                                 on storefront.storefront_id = inventory.inventory_storeid 
-                                WHERE storefront.storefront_name = @p_nameinput;";
+                                WHERE storefront.storefront_id = @storeid;";
 
 
             using (SqlConnection con = new SqlConnection(_connectionStrings))
@@ -111,7 +111,7 @@ namespace StoreDL
                 con.Open();
                 SqlCommand command = new SqlCommand(sqlQuery, con);
 
-                command.Parameters.AddWithValue("@p_nameinput", p_name);
+                command.Parameters.AddWithValue("@storeid", p_storeid);
 
                 SqlDataReader reader = command.ExecuteReader();
 
@@ -119,8 +119,12 @@ namespace StoreDL
                 {
                     listOfLineItems.Add(new LineItem()
                     {
-                        Product = reader.GetString(0),
-                        Quantity = reader.GetInt32(1)
+                        ProductID = reader.GetInt32(0),
+                        Product = reader.GetString(1),
+                        Quantity = reader.GetInt32(2),
+                        StoreID = reader.GetInt32(3),
+                        StoreName = reader.GetString(4),
+                        Price = reader.GetDecimal(5)
                     });
                 }
             }
@@ -177,18 +181,22 @@ namespace StoreDL
 
         }
 
-        // 5. view order history---------------------------------------------------------------------------------------------------\\
+        // 5. view order history (by customer ID)---------------------------------------------------------------------------------------------------\\
         public List<Order> GetCustomerOrderByID(int p_custid)
         {
             List<Order> listOfOrders = new List<Order>();
 
-            string sqlQuery = @"select o.orders_customerid , o.order_id, p.product_name, p.product_price 
+            string sqlQuery = @"select o.orders_customerid , o.order_id, s.storefront_name, p.product_name, p.product_price, l.quantity, o.order_totalprice, o.DateCreated, c.customer_name  
                                 from orders o 
                                 inner join lineitem l 
                                 on o.order_id = l.orderid 
                                 INNER join product p 
-                                on l.product_id = p.product_id 
-                                where o.orders_customerid =  @custidinput";
+                                on l.product_id = p.product_id
+                                inner join storefront s
+                                on o.orders_storefrontid = s.storefront_id
+                                inner join Customer c
+                                on o.orders_customerid = c.customer_id
+                                where o.orders_customerid = @custidinput;";
 
             using (SqlConnection con = new SqlConnection(_connectionStrings))
             {
@@ -202,20 +210,69 @@ namespace StoreDL
                 {
                     listOfOrders.Add(new Order()
                     {
-                        //Reader column is NOT based on table structure but based on what your select query statement is displaying
-                        ID = reader.GetInt32(0),
-                        CustomerID = reader.GetInt32(1),
-                        Product = reader.GetString(2),
-                        Price = reader.GetDecimal(3)
+                        CustomerID = reader.GetInt32(0),
+                        ID = reader.GetInt32(1),
+                        StoreFrontName = reader.GetString(2),
+                        Product = reader.GetString(3),
+                        Price = reader.GetDecimal(4),
+                        Quantity = reader.GetInt32(5),
+                        TotalPrice = reader.GetDecimal(6),
+                        DateCreated = reader.GetDateTime(7),
+                        CustomerName = reader.GetString(8)
+                    });
+                }
+            }
+            return listOfOrders;
+        }
+        //View Order by StoreID-----------------------------------------------------------------------
+        public List<Order> GetStoreOrderHistoryByID(int p_storeid)
+        {
+            List<Order> listOfOrders = new List<Order>();
+
+            string sqlQuery = @"select o.orders_customerid , o.order_id, s.storefront_name, p.product_name, p.product_price, l.quantity, o.order_totalprice, o.DateCreated, c.customer_name  
+                                    from orders o 
+                                    inner join lineitem l 
+                                    on o.order_id = l.orderid 
+                                    INNER join product p 
+                                    on l.product_id = p.product_id
+                                    inner join storefront s
+                                    on o.orders_storefrontid = s.storefront_id
+                                    inner join Customer c
+                                    on o.orders_customerid = c.customer_id
+                                    where orders_storefrontid = @storefrontid;";
+
+            using (SqlConnection con = new SqlConnection(_connectionStrings))
+            {
+                con.Open();
+                SqlCommand command = new SqlCommand(sqlQuery, con);
+                command.Parameters.AddWithValue("@storefrontid", p_storeid);
+
+                SqlDataReader reader = command.ExecuteReader();
+
+                while (reader.Read())
+                {
+                    listOfOrders.Add(new Order()
+                    {
+                        CustomerID = reader.GetInt32(0),
+                        ID = reader.GetInt32(1),
+                        StoreFrontName = reader.GetString(2),
+                        Product = reader.GetString(3),
+                        Price = reader.GetDecimal(4),
+                        Quantity = reader.GetInt32(5),
+                        TotalPrice = reader.GetDecimal(6),
+                        DateCreated = reader.GetDateTime(7),
+                        CustomerName = reader.GetString(8)
                     });
                 }
             }
             return listOfOrders;
         }
 
+
+
         //6.------------------------------------------------------------------------------------------
 
-        public LineItem ReplenishInventory(LineItem p_lineitem)
+        public Inventory ReplenishInventory(Inventory p_inventory)
         {
 
             string sqlQuery = @"update Inventory 
@@ -229,12 +286,12 @@ namespace StoreDL
 
                 SqlCommand command = new SqlCommand(sqlQuery, sqlcon); //command will hold sql query that will execute on the current connection we have on the sqlcon object
                 // command.Parameters.AddWithValue("@customer_id", p_customer.ID); //should auto generate
-                command.Parameters.AddWithValue("@_productid", p_lineitem.LineItemID);
-                command.Parameters.AddWithValue("@_quantity", p_lineitem.Quantity);
+                command.Parameters.AddWithValue("@_productid", p_inventory.ProductID);
+                command.Parameters.AddWithValue("@_quantity", p_inventory.Quantity);
 
                 command.ExecuteNonQuery();
             }
-            return p_lineitem;
+            return p_inventory;
 
         }
 
@@ -269,7 +326,7 @@ namespace StoreDL
 
         }
 
-        public void PlaceOrder(int p_custid, int p_storeid, List<LineItem> _cart, decimal p_totalprice)
+        public void PlaceOrder(int p_custid, int p_storeid, List<LineItem> _cart, decimal p_totalprice) // 4 - 3
         {
             string sqlQuery = @"insert into orders
                                 values(@customerid, @storeid, @price);
@@ -313,6 +370,9 @@ namespace StoreDL
 
 
         }
+
+
+
 
         public User RegisterUser(User p_user)
         {
@@ -360,6 +420,7 @@ namespace StoreDL
             }
             return listOfUsers;
         }
+
         //-------------------------------------------------------------------------------------------------------
 
     }
