@@ -27,12 +27,12 @@ namespace StoreApi.Controllers
                 //Check if the username is existing in the database
                 if (_storeBL.GetAllCustomers().All(p => p.Username != p_username))
                 {
-                    return BadRequest("This username need to be a customer before requesting to open the store!");
+                    return BadRequest("Unregistered Username, please register or login to try again.");
                 }
                 //Check if the username is already store manager, if not will assign
                 if (_storeBL.GetAllStores().Any(p => p.Username.Equals(p_username)))
                 {
-                    return BadRequest("This username is already a store manager");
+                    return BadRequest("This username is already a store manager.");
                 }
                 Log.Information("User assigned to Manager");
                 _storeBL.AssignMangerRoleToUser(p_username);
