@@ -23,29 +23,24 @@ namespace BL
         /// <returns>Gives a filtered list of product via the name</returns>
 
         List<Customer> SearchCustomers(string p_name); //2
-
         List<StoreFront> SearchStoreFronts(string s_name); //3 - 1
-
-        List<LineItem> ViewStoreInventory(int p_storeid); // 3 - 2
+        List<LineItem> GetAllLineItemsByOrderID(int p_orderID); // 3 - 2
         List<StoreFront> GetAllStores();  //4 - 2
         List<Product> GetAllProducts(); //4 - 3
         List<Inventory> GetAllInventory(); // 4- 3
         List<Product> GetAllProductsByStoreID(int p_storeid); //4 - 3 - 4
         List<Inventory> GetAllInventoryByStoreID(int p_storeid); //4 - 3
-
         List<Customer> GetAllCustomers(); // 5 - 1
-        void PlaceOrder(int p_custid, int p_storeid, List<LineItem> _cart, decimal p_totalprice);
-
-        List<Order> GetCustomerOrderByID(int p_custid); // 5 -2
-
-        List<Order> GetStoreOrderHistoryByID(int p_storeid);
-
+        void PlaceOrder(Order p_order);
+        // List<Order> GetCustomerOrderByID(int p_custid); // 5 -2
+        // List<Order> GetStoreOrderHistoryByID(int p_storeid);
         Inventory ReplenishInventory(Inventory p_inventory); // 6
-
         User RegisterUser(User p_user);
         bool Login(User p_user);
 
-
+        void AssignMangerRoleToUser(string p_username);
+        List<Order> GetAllOrders();
+        List<CartDetails> GetAllCartByOrderID(int p_orderID);
     }
 }
 

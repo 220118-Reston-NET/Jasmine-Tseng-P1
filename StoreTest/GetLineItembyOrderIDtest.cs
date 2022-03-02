@@ -10,15 +10,17 @@ namespace Test
     public class PlaceOrderTest
     {
         [Theory]
-        [InlineData(3)]
-        [InlineData(7)]
-        [InlineData(88)]
-        public void Should_GetAllLineItemsByOrderID(int _orderID)
+        [InlineData(3, 5, 9)]
+        [InlineData(7, 1, 1)]
+        [InlineData(88, 3, 4)]
+        public void Should_GetAllLineItemsByOrderID(int _orderID, int _productID, int _quantity)
         {
 
             LineItem TestLineItem = new LineItem()
             {
-                OrderID = _orderID
+                OrderID = _orderID,
+                ProductID = _productID,
+                Quantity = _quantity
             };
 
             List<LineItem> expectedListOfLineItems = new List<LineItem>();
@@ -34,5 +36,9 @@ namespace Test
             // assert
             Assert.Same(expectedListOfLineItems, acualListOfLineItems);
         }
+
+
+
+        // GetAllCustomers()
     }
 }

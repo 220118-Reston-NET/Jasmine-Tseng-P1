@@ -5,6 +5,7 @@ namespace StoreModel
         public int StoreID { get; set; }
         public string StoreFrontName { get; set; }
         public string StoreFrontAddress { get; set; }
+        public string Username { get; set; }
 
         private List<Product> p_inventory;
         public List<Product> Inventory

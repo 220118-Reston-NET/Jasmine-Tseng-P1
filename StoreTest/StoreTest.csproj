@@ -25,7 +25,6 @@
     <ProjectReference Include="..\StoreModel\StoreModel.csproj" />
     <ProjectReference Include="..\StoreDL\StoreDL.csproj" />
     <ProjectReference Include="..\StoreBL\StoreBL.csproj" />
-    <ProjectReference Include="..\StoreUI\StoreUI.csproj" />
   </ItemGroup>
 
 </Project>

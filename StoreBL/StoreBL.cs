@@ -6,50 +6,39 @@ namespace BL
 {
     public class StoreBL : IStoreBL
     {
-
-        //Dependency Injection Pattern
-        //- This is the main reason why we created interface first before the class
-        //- This will save you time on re-writting code that breaks if you updated a completely separate class
-        //- Main reason is to prevent us from re-writting code that already existed on (potentailly) 50 files or more without
-        //the compiler helping us
-        //===========================
         private IRepository _repo;
         public StoreBL(IRepository p_repo)
         {
             _repo = p_repo;
         }
-        //============================
 
+        //===================================================================================================================================== Add a Customer
 
-        public Customer AddCustomer(Customer p_customer) //1. Add Customer
+        public Customer AddCustomer(Customer p_customer)
         {
             Console.WriteLine("Customer Added Successfully.");
             return _repo.AddCustomer(p_customer); // adds the input into the database. It's okay to end the BL here
         }
-        //for searching customers function
 
-        public List<Customer> SearchCustomers(string p_name) //2. Search Customer
+        //===================================================================================================================================== Search a Customer
+
+        public List<Customer> SearchCustomers(string p_name)
         {
             List<Customer> listOfCustomers = _repo.GetAllCustomers(); //BL depends on _repo to get the info back from the DB
-
-            // foreach (Customer cust in listOfCustomers) 
-            // {
-            //     if (cust.Name.Contains(p_name)) //.contains is not literal like "=="
-            //     {
-            //         //add to a list 
-            //     }
-            // }
-
-            //-----linq library-----
-
+                                                                      // foreach (Customer cust in listOfCustomers) 
+                                                                      // {
+                                                                      //     if (cust.Name.Contains(p_name)) //.contains is not literal like "=="
+                                                                      //     {
+                                                                      //         //add to a list 
+                                                                      //     }
+                                                                      // }
             return listOfCustomers
-                   .Where(cust => cust.Name.ToLower().Contains(p_name))
-                   .ToList(); //Converts data back to a list type which the method is calling
-
-            // return listOfCustomers
-            //             .Where(cust => cust.Name.ToLower().Contains(p_name))
-            //             .ToList(); //Converts data back to a list type which the method is calling
+                    .Where(cust => cust.Name.ToLower().Contains(p_name))
+                    .ToList(); //Converts data back to a list type which the method is calling
         }
+
+        //===================================================================================================================================== View Store Fronts
+
 
         public List<StoreFront> SearchStoreFronts(string s_name) //3 View Store Front
         {
@@ -59,7 +48,10 @@ namespace BL
             .Where(store => store.StoreFrontName.ToLower().Contains(s_name))
             .ToList();
         }
-        public List<LineItem> ViewStoreInventory(int p_storeid) //3 - 2
+
+        //=====================================================================================================================================
+
+        public List<LineItem> GetAllLineItemsByOrderID(int p_orderID) //3 - 2
         {
             // List<LineItem> listOfLineItems = _repo.GetAllLineItems();
 
@@ -69,14 +61,18 @@ namespace BL
 
             //return _repo.GetAllLineItems(p_name.ToLower()); // This works
 
-            return _repo.GetAllLineItems(p_storeid);
-
+            return _repo.GetAllLineItemsByOrderID(p_orderID);
         }
+
+        //=====================================================================================================================================
 
         public List<Customer> GetAllCustomers() // 5
         {
             return _repo.GetAllCustomers();
         }
+
+        //=====================================================================================================================================
+
 
         // public List<Customer> SearchCustomerLoginID(int p_LogID) //4-1. Place Order - Login
         // {
@@ -96,15 +92,21 @@ namespace BL
             return _repo.GetAllStores();
         }
 
+        //=====================================================================================================================================
 
-        public List<Order> GetCustomerOrderByID(int p_custid) //5. View Customer Order
-        {
-            return _repo.GetCustomerOrderByID(p_custid);
-        }
-        public List<Order> GetStoreOrderHistoryByID(int p_storeid) //View Order by Store
-        {
-            return _repo.GetStoreOrderHistoryByID(p_storeid);
-        }
+        // public List<Order> GetCustomerOrderByID(int p_custid) //5. View Customer Order
+        // {
+        //     return _repo.GetCustomerOrderByID(p_custid);
+        // }
+
+        // //=====================================================================================================================================
+
+        // public List<Order> GetStoreOrderHistoryByID(int p_storeid) //View Order by Store
+        // {
+        //     return _repo.GetStoreOrderHistoryByID(p_storeid);
+        // }
+
+        //=====================================================================================================================================
 
         public Inventory ReplenishInventory(Inventory p_inventory) // 6. Replenish Inventory
         {
@@ -112,15 +114,21 @@ namespace BL
             return _repo.ReplenishInventory(p_inventory);
         }
 
+        //=====================================================================================================================================
+
         public List<Product> GetAllProducts() //4-3
         {
             return _repo.GetAllProducts();
         }
 
+        //=====================================================================================================================================
+
         public List<Inventory> GetAllInventory() //4-3
         {
             return _repo.GetAllInventory();
         }
+
+        //=====================================================================================================================================
 
         public List<Product> GetAllProductsByStoreID(int p_storeid)
         {
@@ -135,17 +143,22 @@ namespace BL
             return ListOfProducts;
         }
 
+        //=====================================================================================================================================
+
         public List<Inventory> GetAllInventoryByStoreID(int p_storeid) //4
         {
             return GetAllInventory().FindAll(p => p.StoreID == p_storeid);
         }
 
-        public void PlaceOrder(int p_custid, int p_storeid, List<LineItem> _cart, decimal p_totalprice) // 4 - 3
+        //=====================================================================================================================================
+
+        public void PlaceOrder(Order p_order) // 4 - 3
         {
-            Console.WriteLine("Your Order has been placed successfully!");
-            _repo.PlaceOrder(p_custid, p_storeid, _cart, p_totalprice);
+            // Console.WriteLine("Your Order has been placed successfully!");
+            _repo.PlaceOrder(p_order);
         }
 
+        //=====================================================================================================================================
 
         public User RegisterUser(User p_user)
         {
@@ -158,6 +171,8 @@ namespace BL
             throw new Exception("Username already exists.");
 
         }
+
+        //=====================================================================================================================================
 
         public bool Login(User p_user)
         {
@@ -175,6 +190,24 @@ namespace BL
             }
             return false;
         }
+
+        public void AssignMangerRoleToUser(string p_username)
+        {
+            _repo.AssignMangerRoleToUser(p_username);
+        }
+
+        public List<Order> GetAllOrders()
+        {
+            return _repo.GetAllOrders();
+        }
+
+        public List<CartDetails> GetAllCartByOrderID(int p_orderID)
+        {
+            return _repo.GetAllCartByOrderID(p_orderID);
+        }
+
+
+        //=====================================================================================================================================
 
     }
 }
