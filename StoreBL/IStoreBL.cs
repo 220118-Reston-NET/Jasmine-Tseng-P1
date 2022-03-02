@@ -23,12 +23,13 @@ namespace BL
         /// <returns>Gives a filtered list of product via the name</returns>
 
         List<Customer> SearchCustomers(string p_name); //2
-        List<StoreFront> SearchStoreFronts(string s_name); //3 - 1
+        //List<StoreFront> SearchStoreFronts(string s_name); //3 - 1
         List<LineItem> GetAllLineItemsByOrderID(int p_orderID); // 3 - 2
         List<StoreFront> GetAllStores();  //4 - 2
         List<Product> GetAllProducts(); //4 - 3
         List<Inventory> GetAllInventory(); // 4- 3
-        List<Product> GetAllProductsByStoreID(int p_storeid); //4 - 3 - 4
+
+        //List<Product> GetAllProductsByStoreID(int p_storeid); //4 - 3 - 4
         List<Inventory> GetAllInventoryByStoreID(int p_storeid); //4 - 3
         List<Customer> GetAllCustomers(); // 5 - 1
         void PlaceOrder(Order p_order);

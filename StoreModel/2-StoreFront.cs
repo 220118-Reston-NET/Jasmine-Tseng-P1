@@ -8,14 +8,14 @@ namespace StoreModel
         public string Username { get; set; }
 
         private List<Product> p_inventory;
-        public List<Product> Inventory
-        {
-            get { return p_inventory; }
-            set
-            {
-                p_inventory = value;
-            }
-        }
+        // public List<Product> Inventory
+        // {
+        //     get { return p_inventory; }
+        //     set
+        //     {
+        //         p_inventory = value;
+        //     }
+        // }
         public StoreFront() //default values
         {
             StoreFrontName = "Store Name";

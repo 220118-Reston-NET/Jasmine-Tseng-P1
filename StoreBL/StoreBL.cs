@@ -40,14 +40,14 @@ namespace BL
         //===================================================================================================================================== View Store Fronts
 
 
-        public List<StoreFront> SearchStoreFronts(string s_name) //3 View Store Front
-        {
-            List<StoreFront> listOfStores = _repo.GetAllStores();
+        // public List<StoreFront> SearchStoreFronts(string s_name) //3 View Store Front
+        // {
+        //     List<StoreFront> listOfStores = _repo.GetAllStores();
 
-            return listOfStores
-            .Where(store => store.StoreFrontName.ToLower().Contains(s_name))
-            .ToList();
-        }
+        //     return listOfStores
+        //     .Where(store => store.StoreFrontName.ToLower().Contains(s_name))
+        //     .ToList();
+        // }
 
         //=====================================================================================================================================
 
@@ -130,18 +130,18 @@ namespace BL
 
         //=====================================================================================================================================
 
-        public List<Product> GetAllProductsByStoreID(int p_storeid)
-        {
-            List<Product> ListOfProducts = new List<Product>();
-            Product _prod = new Product();
-            foreach (var item in GetAllInventoryByStoreID(p_storeid))
-            {
-                _prod = GetAllProducts().Find(p => p.ItemID == item.ProductID);
-                ListOfProducts.Add(_prod);
+        // public List<Product> GetAllProductsByStoreID(int p_storeid)
+        // {
+        //     List<Product> ListOfProducts = new List<Product>();
+        //     Product _prod = new Product();
+        //     foreach (var item in GetAllInventoryByStoreID(p_storeid))
+        //     {
+        //         _prod = GetAllProducts().Find(p => p.ItemID == item.ProductID);
+        //         ListOfProducts.Add(_prod);
 
-            }
-            return ListOfProducts;
-        }
+        //     }
+        //     return ListOfProducts;
+        // }
 
         //=====================================================================================================================================
 
