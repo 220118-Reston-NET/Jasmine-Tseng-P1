@@ -396,8 +396,8 @@ namespace StoreDL
         public User RegisterUser(User p_user)
         {
             string sqlQuery = @"INSERT INTO Userdata
-                                                            (username, password)
-                                                            VALUES(@Username, @Password);";
+                                (username, password)
+                                VALUES(@Username, @Password);";
 
             using (SqlConnection sqlcon = new SqlConnection(_connectionStrings))
             {

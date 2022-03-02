@@ -10,7 +10,7 @@ namespace StoreTest;
 public class ModelTest
 {
     [Fact]
-    public void QuantityLimitTest1()
+    public void Should_LineItemValidData()
     {
         //Arrange
         LineItem testlineitem = new LineItem();
@@ -32,7 +32,7 @@ public class ModelTest
     [InlineData(-178)]
     [InlineData(-600000)]
     [InlineData(-2)]
-    public void InvalidDataTest(int p_invalidquantity)
+    public void Should_InvalidLineItemDataTest(int p_invalidquantity)
     {
         //Arrange
         LineItem testlineitem = new LineItem();
@@ -47,7 +47,7 @@ public class ModelTest
     //=====================================================================================================================================
 
     [Fact]
-    public void ShouldProduct()
+    public void Should_ProductValidData()
     {
         //Arrange
         Product _prod = new Product();
@@ -98,7 +98,43 @@ public class ModelTest
         Assert.Equal(_username, testName.Username);
 
     }
+    //=====================================================================================================================================
+
+    [Fact]
+    public void Should_InventoryValidData()
+    {
+
+        //Arrange
+        Inventory _testInventory = new Inventory();
+        int _storeID = 11;
+        int _productID = 82;
+        int _quantity = 15;
 
 
+        //Act
+        _testInventory.StoreID = _storeID;
+        _testInventory.ProductID = _productID;
+        _testInventory.Quantity = _quantity;
+
+        //Assert
+        Assert.Equal(_quantity, _testInventory.Quantity);
+        Assert.Equal(_storeID, _testInventory.StoreID);
+        Assert.Equal(_quantity, _testInventory.Quantity);
+    }
+
+    //=====================================================================================================================================
+
+    [Theory]
+    [InlineData(123.00)]
+    [InlineData(99111.000)]
+    [InlineData(1127773.66)]
+    public void Should_CartDetailsValidData(decimal p_price)
+    {
+        CartDetails _testCart = new CartDetails();
+
+        _testCart.Price = p_price;
+
+        Assert.Equal(p_price, _testCart.Price);
+    }
 
 }
