@@ -1,23 +1,23 @@
-using StoreModel;
-using Xunit;
+// using StoreModel;
+// using Xunit;
 
-namespace StoreTest;
+// namespace StoreTest;
 
-public class AddCustomerTest
-{
-    [Fact] 
-    public void AddCustomer()
-    {
-        //Arrange
-        Customer testName = new Customer();
-        string testNameVar = "Pooh Bear";
+// public class AddCustomerTest
+// {
+//     [Fact]
+//     public void Should_AddCustomer()
+//     {
+//         //Arrange
+//         Customer testName = new Customer();
+//         string testNameVar = "Pooh Bear";
 
-        //Act
-        testName.Name = testNameVar;
+//         //Act
+//         testName.Name = testNameVar;
 
-        //Assert
-        Assert.NotNull(testName.Name);
-        Assert.Equal(testNameVar, testName.Name);
+//         //Assert
+//         Assert.NotNull(testName.Name);
+//         Assert.Equal(testNameVar, testName.Name);
 
-    }
-} 
+//     }
+// }

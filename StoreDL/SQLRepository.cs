@@ -37,7 +37,7 @@ namespace StoreDL
 
         ///===================================================================================================================================== Search a Customer
 
-        public List<Customer> GetAllCustomers()
+        public List<Customer> GetAllCustomers() //tested
         {
             List<Customer> listOfCustomers = new List<Customer>();
 
@@ -69,7 +69,7 @@ namespace StoreDL
 
         //===================================================================================================================================== View Store Inventory
 
-        public List<StoreFront> GetAllStores()
+        public List<StoreFront> GetAllStores() //tested
         {
 
             List<StoreFront> listOfStores = new List<StoreFront>();
@@ -101,7 +101,7 @@ namespace StoreDL
 
         //============================================================================================================== Get All LineItems By Order ID 
 
-        public List<LineItem> GetAllLineItemsByOrderID(int p_orderID)
+        public List<LineItem> GetAllLineItemsByOrderID(int p_orderID) //tested
         {
             List<LineItem> listOfLineItems = new List<LineItem>();
 
@@ -151,7 +151,7 @@ namespace StoreDL
 
         //     }
         // }
-        public List<Product> GetAllProducts() //4-3
+        public List<Product> GetAllProducts() //4-3 tested
         {
             string sqlQuery = @"select * from product;";
 
@@ -301,7 +301,7 @@ namespace StoreDL
 
         //=====================================================================================================================================
 
-        public List<Inventory> GetAllInventory() //4-3
+        public List<Inventory> GetAllInventory() //4-3 tested
         {
             string sqlQuery = @"select * from Inventory;";
 
@@ -333,28 +333,28 @@ namespace StoreDL
         //=====================================================================================================================================
         protected decimal CalTotalPrice(List<LineItem> p_cart)
         {
-            decimal _totalPirce = 0m;
+            decimal _totalPrice = 0m;
             decimal _productPrice = 0;
             foreach (var item in p_cart)
             {
                 _productPrice = GetAllProducts().Find(p => p.ItemID.Equals(item.ProductID)).Price;
-                _totalPirce += item.Quantity * _productPrice;
+                _totalPrice += item.Quantity * _productPrice;
             }
-            return _totalPirce;
+            return _totalPrice;
         }
         public void PlaceOrder(Order p_order) // 4 - 3
         {
             string sqlQuery = @"insert into orders
-                                            values(@customerid, @storeid, @price, @datecreated);
-                                            select scope_identity();";
+                                values(@customerid, @storeid, @price, @datecreated);
+                                select scope_identity();";
 
             string sqlQuery2 = @"insert into lineitem 
-                                            values (@orderid, @productid, @quantity);";
+                                values (@orderid, @productid, @quantity);";
 
             string sqlQuery3 = @"update Inventory 
-                                            set quantity = quantity - @quantity
-                                            where inventory_storeid = @storeid
-                                            AND inventory_productid = @productid;";
+                                set quantity = quantity - @quantity
+                                where inventory_storeid = @storeid
+                                AND inventory_productid = @productid;";
 
             p_order.DateCreated = DateTime.UtcNow;
             using (SqlConnection sqlcon = new SqlConnection(_connectionStrings))
