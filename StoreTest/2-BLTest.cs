@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System;
+using System.Globalization;
 using StoreModel;
 using Moq;
 using StoreDL;
@@ -326,11 +328,73 @@ namespace Test
 
         //=====================================================================================================================================
 
+        // [Fact]
+        // public void Should_GetAllUsers()
+        // {
+        //     string _username = "Skater123";
+        //     string _password = "Swimmer456";
 
+        //     User _user = new User()
+        //     {
+        //         Username = _username,
+        //         Password = _password
+        //     };
+
+        //     List<User> expectedListofUsers = new List<User>();
+        //     expectedListofUsers.Add(_user);
+
+        //     Mock<IRepository> mockRepo = new Mock<IRepository>();
+        //     mockRepo.Setup(repo => repo.GetAllUsers()).Returns(expectedListofUsers);
+        //     IStoreBL _storeBL = new StoreBL(mockRepo.Object);
+
+        //     User actualUser = _storeBL.RegisterUser(_user);
+
+        //     // Assert.Same(expectedListofUsers, actualUser);
+        //     Assert.ThrowsAny<Exception>(expectedListofUsers, actualUser);
+
+        [Fact]
+        public void Should_GetAllOrders()
+        {
+            int _orderid = 45;
+            int _customerid = 30;
+            int _storeID = 15;
+            decimal _totalprice = 35.00m;
+            DateTime _datecreated = DateTime.UtcNow;
+            List<LineItem> _cart = new List<LineItem>();
+
+            Order _testorder = new Order()
+            {
+                OrderID = _orderid,
+                CustomerID = _customerid,
+                StoreID = _storeID,
+                TotalPrice = _totalprice,
+                DateCreated = _datecreated,
+                Cart = _cart
+            };
+
+            List<Order> expectedListOfOrders = new List<Order>();
+            expectedListOfOrders.Add(_testorder);
+
+            Mock<IRepository> mockRepo = new Mock<IRepository>();
+            mockRepo.Setup(repo => repo.GetAllOrders()).Returns(expectedListOfOrders);
+            IStoreBL _storeBL = new StoreBL(mockRepo.Object);
+
+            // act
+            List<Order> actualListOfOrders = _storeBL.GetAllOrders();
+
+            // assert
+            Assert.Same(expectedListOfOrders, actualListOfOrders);
+        }
 
 
 
 
 
     }
+
+
+
+
+
+
 }
