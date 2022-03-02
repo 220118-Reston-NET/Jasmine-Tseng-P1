@@ -29,11 +29,6 @@ namespace StoreModel
             };
         }
 
-        //ToString() method is the string version of your object, it is what displays after it gets searched
-        // public override string ToString()
-        // {
-        //     return $"ID: {ID}\nName: {Name}\nAddress: {Address}\nPhone: {Phone}";
-        // }
     }
 
 }
