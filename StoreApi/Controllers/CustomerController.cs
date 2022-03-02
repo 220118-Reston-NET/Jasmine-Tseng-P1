@@ -79,7 +79,7 @@ namespace StoreApi.Controllers
         {
             try
             {
-                p_orderby.ToLower();
+                //p_orderby.ToLower();
 
                 List<OrderDetails> _listOrderDetail = new List<OrderDetails>();
                 List<OrderDetails> _sortedOrdersList = new List<OrderDetails>();
@@ -109,7 +109,7 @@ namespace StoreApi.Controllers
                     });
                 }
 
-                switch (p_orderby)
+                switch (p_orderby.ToLower())
                 {
                     case "date":
                         Log.Information("User looked at orders history by date created");
