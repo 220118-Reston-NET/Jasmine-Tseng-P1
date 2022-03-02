@@ -47,7 +47,7 @@ namespace StoreApi.Controllers
         {
             try
             {
-                return Ok(_storeBL.GetAllCustomers()); //why it did not initially work on swagger is bc parameters were not added
+                return Ok(_storeBL.GetAllCustomers());
             }
             catch (System.Exception)
             {
