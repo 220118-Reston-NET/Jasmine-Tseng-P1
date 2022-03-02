@@ -3,6 +3,12 @@ obj
 .vscode
 appsettings.json
 logs
+.DS_Store
 StoreUI
 publish
-.DS_Store
+
+
+
+
+
+

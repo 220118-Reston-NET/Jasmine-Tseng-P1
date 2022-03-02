@@ -34,11 +34,13 @@ namespace StoreApi.Controllers
                 {
                     return BadRequest("This username is already a store manager");
                 }
+                Log.Information("User assigned to Manager");
                 _storeBL.AssignMangerRoleToUser(p_username);
                 return Ok("Manager role assigned successfully!");
             }
             catch (System.Exception e)
             {
+                Log.Warning(e.Message);
                 return StatusCode(422, e);
             }
         }

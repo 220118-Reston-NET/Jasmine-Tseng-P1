@@ -30,6 +30,7 @@ namespace StoreApi.Controllers
         {
             try
             {
+                Log.Information("User Searched Customer by name" + p_name);
                 return Ok(_storeBL.SearchCustomers(p_name.ToLower()));
 
 
@@ -52,6 +53,7 @@ namespace StoreApi.Controllers
         {
             try
             {
+                Log.Information("User Searched Store by StoreID");
                 StoreFront _store = _storeBL.GetAllStores().Find(p => p.StoreID.Equals(p_storeID));
                 StoreFrontDetails data = new StoreFrontDetails();
                 data.StoreFrontName = _store.StoreFrontName;
@@ -71,6 +73,7 @@ namespace StoreApi.Controllers
         {
             try
             {
+                Log.Information("Store Looked at Inventory of store # " + p_storeID);
                 return Ok(_storeBL.GetAllInventoryByStoreID(p_storeID));
             }
             catch (System.Exception e)
@@ -87,7 +90,7 @@ namespace StoreApi.Controllers
         public IActionResult ReplenishInventory([FromBody] Inventory p_inventory)
         {
             _storeBL.ReplenishInventory(p_inventory);
-            Log.Information("User replenished " + p_inventory.Quantity + " of product #: " + p_inventory.ProductID + " to the inventory!");
+            Log.Information("User replenished " + p_inventory + " of product #: " + p_inventory.ProductID + " to the inventory!");
 
             return Created("Sucessfully replenished Inventory!", p_inventory);
         }
@@ -95,12 +98,14 @@ namespace StoreApi.Controllers
         //=====================================================================================================================================
 
         [HttpGet("Orders/{p_storeid}")] // 6. View Order History of Store
-        public IActionResult GetStoreOrderHistoryByID(int p_storeid)
+        public IActionResult GetStoreOrderHistoryByID(int p_storeid, string p_orderby)
         {
             try
             {
-                List<OrderDetails> _listOrderDetail = new List<OrderDetails>();
+                p_orderby.ToLower();
 
+                List<OrderDetails> _listOrderDetail = new List<OrderDetails>();
+                List<OrderDetails> _sortedOrdersList = new List<OrderDetails>();
                 List<Order> _listStoreOrder = _storeBL.GetAllOrders().FindAll(p => p.StoreID.Equals(p_storeid));
 
                 foreach (var item in _listStoreOrder)
@@ -126,7 +131,23 @@ namespace StoreApi.Controllers
                         Cart = _storeBL.GetAllCartByOrderID(item.OrderID)
                     });
                 }
-                return Ok(_listOrderDetail);
+
+                switch (p_orderby)
+                {
+                    case "date":
+                        Log.Information("User looked at orders history by date created");
+                        return Ok(_sortedOrdersList = _listOrderDetail.OrderBy(p => p.DateCreated).ToList());
+                        break;
+                    case "totalprice":
+                        Log.Information("User looked at order history by total price");
+                        return Ok(_sortedOrdersList = _listOrderDetail.OrderBy(p => p.TotalPrice).ToList());
+                        break;
+                    default:
+                        Log.Information("User looked at order history");
+                        return Ok(_listOrderDetail);
+                        break;
+                }
+
             }
             catch (System.Exception e)
             {

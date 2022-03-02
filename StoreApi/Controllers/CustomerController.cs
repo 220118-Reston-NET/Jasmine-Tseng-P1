@@ -30,6 +30,7 @@ namespace StoreApi.Controllers
         {
             try
             {
+                Log.Information("Customer placed an order.");
                 _storeBL.PlaceOrder(p_order);
                 return Created("Placed Order successfully!", p_order);
             }
@@ -62,6 +63,7 @@ namespace StoreApi.Controllers
         {
             try
             {
+                Log.Information("User seached customers by ID");
                 return Ok(_storeBL.GetAllCustomers().Find(p => p.ID.Equals(p_custid))); //why it did not initially work on swagger is bc parameters were not added
             }
             catch (System.Exception)
@@ -73,12 +75,14 @@ namespace StoreApi.Controllers
         //=====================================================================================================================================
 
         [HttpGet("Orders/{p_custid}")] // Get Order History of Customer
-        public IActionResult GetCustomerOrderByID(int p_custid)
+        public IActionResult GetCustomerOrderByID(int p_custid, string p_orderby)
         {
             try
             {
-                List<OrderDetails> _listOrderDetail = new List<OrderDetails>();
+                p_orderby.ToLower();
 
+                List<OrderDetails> _listOrderDetail = new List<OrderDetails>();
+                List<OrderDetails> _sortedOrdersList = new List<OrderDetails>();
                 List<Order> _listCustomerOrder = _storeBL.GetAllOrders().FindAll(p => p.CustomerID.Equals(p_custid));
 
                 foreach (var item in _listCustomerOrder)
@@ -104,7 +108,23 @@ namespace StoreApi.Controllers
                         Cart = _storeBL.GetAllCartByOrderID(item.OrderID)
                     });
                 }
-                return Ok(_listOrderDetail);
+
+                switch (p_orderby)
+                {
+                    case "date":
+                        Log.Information("User looked at orders history by date created");
+                        return Ok(_sortedOrdersList = _listOrderDetail.OrderBy(p => p.DateCreated).ToList());
+                        break;
+                    case "totalprice":
+                        Log.Information("User looked at order history by total price");
+                        return Ok(_sortedOrdersList = _listOrderDetail.OrderBy(p => p.TotalPrice).ToList());
+                        break;
+                    default:
+                        Log.Information("User looked at order history");
+                        return Ok(_listOrderDetail);
+                        break;
+                }
+
             }
             catch (System.Exception)
             {

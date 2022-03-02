@@ -2,7 +2,7 @@
 
 # Technologies
 - C#
-- PostgreSQL DB-
+- Microsoft Azure SQL Database
 - ADO.NET
 - Xunit
 - Moq
