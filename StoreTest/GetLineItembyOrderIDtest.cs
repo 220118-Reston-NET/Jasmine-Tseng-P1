@@ -6,7 +6,7 @@ using Moq;
 using StoreDL;
 using BL;
 using Xunit;
-using StoreApi;
+
 
 namespace Test
 {
@@ -159,8 +159,37 @@ namespace Test
             Assert.Same(expectedStoreFront, actualListOfStoreFront);
         }
 
-        // [Fact]
 
+        [Fact]
+        public void Should_GetAllProducts()
+        {
+            int _itemID = 99;
+            string _name = "Shampoo";
+            decimal _price = 5.99m;
+            int _quantity = 7;
+
+            Product _testproduct = new Product()
+            {
+                ItemID = _itemID,
+                Name = _name,
+                Price = _price,
+                Quantity = _quantity
+            };
+
+            List<Product> expectedListOfProducts = new List<Product>();
+            expectedListOfProducts.Add(_testproduct);
+
+            Mock<IRepository> mockRepo = new Mock<IRepository>();
+            mockRepo.Setup(repo => repo.GetAllProducts()).Returns(expectedListOfProducts);
+            IStoreBL _storeBL = new StoreBL(mockRepo.Object);
+
+            //assert
+
+            List<Product> actualListOfProducts = _storeBL.GetAllProducts();
+
+            // assert
+            Assert.Same(expectedListOfProducts, actualListOfProducts);
+        }
 
 
     }
