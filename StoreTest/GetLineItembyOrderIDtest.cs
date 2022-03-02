@@ -1,9 +1,12 @@
 using System.Collections.Generic;
+using System;
+using System.Globalization;
 using StoreModel;
 using Moq;
 using StoreDL;
 using BL;
 using Xunit;
+using StoreApi;
 
 namespace Test
 {
@@ -55,20 +58,110 @@ namespace Test
                 Username = _username
             };
 
-            List<Customer> expectedListOfCustomer = new List<Customer>();
-            expectedListOfCustomer.Add(_testcustomer);
+            List<Customer> expectedListOfCustomers = new List<Customer>();
+            expectedListOfCustomers.Add(_testcustomer);
 
             Mock<IRepository> mockRepo = new Mock<IRepository>();
-            mockRepo.Setup(repo => repo.GetAllCustomers()).Returns(expectedListOfCustomer);
+            mockRepo.Setup(repo => repo.GetAllCustomers()).Returns(expectedListOfCustomers);
             IStoreBL _storeBL = new StoreBL(mockRepo.Object);
 
             // act
-            List<Customer> acualListOfLineItems = _storeBL.GetAllCustomers();
+            List<Customer> actualListOfCustomers = _storeBL.GetAllCustomers();
 
             // assert
-            Assert.Same(expectedListOfCustomer, acualListOfLineItems);
-
+            Assert.Same(expectedListOfCustomers, actualListOfCustomers);
 
         }
+
+        // [Theory]
+        // [InlineData("HelloKitty123", "Meow456")]
+        // [InlineData("Spiderman23", "Spider")]
+        // [InlineData("Test123", "password23344")]
+        // public void Should_login(string _username, string _password)
+        // {
+        //     //arrange
+        //     User _testuser = new User()
+        //     {
+        //      Username = _username,
+        //      Password = _password
+        //     };
+
+        //     Mock<IStoreBL> mockBL = new Mock<IStoreBL>();
+        //     mockBL.Setup(bl => bl.Login(_testuser));
+        //     ControllerBase _authencontroller = new AuthenticationController(mockBL.Object);
+
+        //     actual = _storeBL.Login();
+
+        // [Fact]
+        // public void Should_PlaceOrder(Order _order)
+        // {
+
+        //     int _orderid = 45;
+        //     int _customerid = 30;
+        //     int _storeID = 15;
+        //     decimal _totalprice = 35.00m;
+        //     DateTime _datecreated = DateTime.UtcNow;
+        //     List<LineItem> _cart = new List<LineItem>();
+
+
+        //     Order _testorder = new Order()
+        //     {
+        //         OrderID = _orderid,
+        //         CustomerID = _customerid,
+        //         StoreID = _storeID,
+        //         TotalPrice = _totalprice,
+        //         DateCreated = _datecreated,
+        //         Cart = _cart
+        //     };
+
+        //     Mock<IRepository> mockRepo = new Mock<IRepository>();
+        //     mockRepo.Setup(repo => repo.PlaceOrder(_testorder));
+        //     IStoreBL _storeBL = new StoreBL(mockRepo.Object);
+        //     Order expectedOrder = _testorder;
+
+        //     // act
+        //     Order actualOrder = _storeBL.PlaceOrder();
+
+        //     // assert
+        //     Assert.Same(expectedListOfCustomer, actualOrder);
+
+
+        // }
+
+        [Fact]
+        public void Should_GetAllStores()
+        {
+            int _storeID = 20;
+            string _storefrontname = "Test Store";
+            string _storefrontaddress = "344 Store Address";
+            string _username = "testusernameofstore123";
+
+            StoreFront _testStoreFront = new StoreFront()
+            {
+                StoreID = _storeID,
+                StoreFrontName = _storefrontname,
+                StoreFrontAddress = _storefrontaddress,
+                Username = _username
+            };
+
+            List<StoreFront> expectedStoreFront = new List<StoreFront>();
+            expectedStoreFront.Add(_testStoreFront);
+
+            Mock<IRepository> mockRepo = new Mock<IRepository>();
+            mockRepo.Setup(repo => repo.GetAllStores()).Returns(expectedStoreFront);
+            IStoreBL _storeBL = new StoreBL(mockRepo.Object);
+
+            //assert
+
+            List<StoreFront> actualListOfStoreFront = _storeBL.GetAllStores();
+
+            // assert
+            Assert.Same(expectedStoreFront, actualListOfStoreFront);
+        }
+
+        // [Fact]
+
+
+
     }
 }
