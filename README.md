@@ -1,4 +1,4 @@
-# P1 - Jasmine Tseng
+# Store App RESTful API
 
 The store api is a RESTful API that helps customers purchase products from your business. Designed with functionality that would make virtual shopping much simpler! Customer features include: account creation, order placements, and order history. It also comes with admin functionality that let's store owners replenish inventory and view the specific store's order history!
 
